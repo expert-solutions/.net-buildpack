@@ -116,7 +116,11 @@ module NETBuildpack::Runtime
       start_script = [start_script, "\n", @context[:start_script][:run], "\n"].join()
 
       start_script_path = File.join(@context[:app_dir], "start.sh")
-	  system "chmod +w #{@context[:app_dir]}"
+	  
+	  print "Setting permissions of the folder '#{@context[:app_dir]}' to 0777."
+	  #system "chmod 0777 #{@context[:app_dir]}"
+	  File.chmod(0777, @context[:app_dir])
+	  
       File.open(start_script_path, 'w') { |f| f.write(start_script) }
 
       File.chmod(0555, start_script_path) # -r-xr-xr-x -> Read & Execute
